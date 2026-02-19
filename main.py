@@ -1,5 +1,7 @@
-# Importing libraries
-from PyQt6.QtCore import Qt
+# Importing the QPixMap for displaying an Image via it's pixxel array
+from PyQt6.QtGui import QPixmap
+
+# Importing then essential libraries
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
 
 
@@ -11,16 +13,8 @@ class MainWindow(QMainWindow):
 
         widget: QLabel = QLabel("Hello")
 
-        # Using the label methods to customize it's
-        # Extracting and modifying the font
-        font = widget.font()
-        font.setPointSize(30)
-
-        # Appliying the font to the QLable widget
-        widget.setFont(font)
-
-        # Customizing the positioning of the QLable using Qt constants attributes
-        widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # using the SLOT method to set a pixmap for the referenced label
+        widget.setPixmap(QPixmap("otje.jpg"))
 
         self.setCentralWidget(widget)
 
