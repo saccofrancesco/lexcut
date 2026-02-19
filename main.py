@@ -1,12 +1,6 @@
-# Importing libraries (new QLineEdit, QLabel, QBoxLayout)
-from PyQt6.QtWidgets import (
-    QApplication,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QVBoxLayout,
-    QWidget,
-)
+# Importing libraries
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
 
 
 class MainWindow(QMainWindow):
@@ -15,26 +9,20 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        # Creating the two new widgets
-        self.label: QLabel = QLabel()
-        self.input: QLineEdit = QLineEdit()
+        widget: QLabel = QLabel("Hello")
 
-        # Connecting th SIGNAL method of the text changes of the QLineEdit,
-        # to the SLOT method of the QLabel, which receives the text's changes
-        # and update the text with setText on the connected label
-        self.input.textChanged.connect(self.label.setText)
+        # Using the label methods to customize it's
+        # Extracting and modifying the font
+        font = widget.font()
+        font.setPointSize(30)
 
-        # Created the widget first, then composing the layout of them and then,
-        # apply the layout to the final widget so the widgets are finally
-        # visible
-        layout: QVBoxLayout = QVBoxLayout()
-        layout.addWidget(self.input)
-        layout.addWidget(self.label)
+        # Appliying the font to the QLable widget
+        widget.setFont(font)
 
-        container: QWidget = QWidget()
-        container.setLayout(layout)
+        # Customizing the positioning of the QLable using Qt constants attributes
+        widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.setCentralWidget(container)
+        self.setCentralWidget(widget)
 
 
 app: QApplication = QApplication([])
