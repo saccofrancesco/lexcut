@@ -9,17 +9,22 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        # Creating and connecting the button clicked SIGNAL to the class 
-        # custom method SLOT
         button: QPushButton = QPushButton("Press Me!")
+
+        # Set the possibility for the button to be 'checked'
+        button.setCheckable(True)
+
         button.clicked.connect(self.the_button_was_clicked)
+        button.clicked.connect(self.the_button_was_toggled)
 
         # Set the button as the central widget
         self.setCentralWidget(button)
-    
-    # Defining the class cutom SLOT method
+
     def the_button_was_clicked(self) -> None:
         print("Clicked!")
+
+    def the_button_was_toggled(self, is_checked: bool) -> None:
+        print("Checked?", is_checked)
 
 
 app: QApplication = QApplication([])
