@@ -1,6 +1,3 @@
-# Importing sizing from Qt Core module
-from PyQt6.QtCore import QSize
-
 # Importing essentials
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
 
@@ -12,14 +9,17 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
+        # Creating and connecting the button clicked SIGNAL to the class 
+        # custom method SLOT
         button: QPushButton = QPushButton("Press Me!")
-
-        # Using the method, pass a QSize object with width and height in
-        # order to set the size
-        self.setFixedSize(QSize(400, 300))
+        button.clicked.connect(self.the_button_was_clicked)
 
         # Set the button as the central widget
         self.setCentralWidget(button)
+    
+    # Defining the class cutom SLOT method
+    def the_button_was_clicked(self) -> None:
+        print("Clicked!")
 
 
 app: QApplication = QApplication([])
