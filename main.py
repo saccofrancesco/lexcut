@@ -1,6 +1,5 @@
-# Importing necessaries libraries
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QCheckBox
+# Importing base libraries
+from PyQt6.QtWidgets import QApplication, QMainWindow, QComboBox
 
 
 class MainWindow(QMainWindow):
@@ -9,24 +8,21 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QCheckBox = QCheckBox("This is a checkbox")
-        widget.setCheckState(Qt.CheckState.Checked)
+        widget: QComboBox = QComboBox()
+        widget.addItems(["One", "Two", "Three"])
 
-        # Using this enables the box to have 3 states instead of two 
-        # (this is why False 0, True 2 and in the middle 1)
-        # widget.setTristate(True)
-
-        widget.stateChanged.connect(self.show_state)
+        widget.currentIndexChanged.connect(self.index_changed)
+        widget.currentTextChanged.connect(self.text_changed)
 
         self.setCentralWidget(widget)
 
-    # SLOT fanction which react to the changing of state made by the checkbox
-    def show_state(self, state) -> None:
+    # SLOT mathod which reacts at the option change SIGNAL by the combo-box
+    def index_changed(self, index: int) -> None:
+        print(index)
 
-        # Check if the state it's equal to the value of a Trye checked checkbox
-        print(state == Qt.CheckState.Checked.value)
-
-        print(state)
+    # SLOT method which instead connect to the other type fo SIGNAL by the combo-box
+    def text_changed(self, text: str) -> None:
+        print(text)
 
 
 app: QApplication = QApplication([])
