@@ -1,14 +1,6 @@
-# Importing the OS library to work with relative paths and files
-import os
-
-# Importing then necessaries libraries
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
-
-# Computing the base directory where the script it's at
-basedir: str = os.path.dirname(__file__)
-print("Current working directory:", os.getcwd())
-print("Paths are relative to:", basedir)
+# Importing necessaries libraries
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QMainWindow, QCheckBox
 
 
 class MainWindow(QMainWindow):
@@ -17,17 +9,24 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QLabel = QLabel("Hello")
+        widget: QCheckBox = QCheckBox("This is a checkbox")
+        widget.setCheckState(Qt.CheckState.Checked)
 
-        # Joins the based dir calculated safely, and then adding the path realtive to
-        # the computed path
-        widget.setPixmap(QPixmap(os.path.join(basedir, "otje.jpg")))
+        # Using this enables the box to have 3 states instead of two 
+        # (this is why False 0, True 2 and in the middle 1)
+        # widget.setTristate(True)
 
-        # Activate the scaling to ALWAYS fit the window size 
-        # (aspect ratio when enlarging not maintained)
-        widget.setScaledContents(True)
+        widget.stateChanged.connect(self.show_state)
 
         self.setCentralWidget(widget)
+
+    # SLOT fanction which react to the changing of state made by the checkbox
+    def show_state(self, state) -> None:
+
+        # Check if the state it's equal to the value of a Trye checked checkbox
+        print(state == Qt.CheckState.Checked.value)
+
+        print(state)
 
 
 app: QApplication = QApplication([])
