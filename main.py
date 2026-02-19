@@ -1,8 +1,14 @@
-# Importing the QPixMap for displaying an Image via it's pixxel array
-from PyQt6.QtGui import QPixmap
+# Importing the OS library to work with relative paths and files
+import os
 
-# Importing then essential libraries
+# Importing then necessaries libraries
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
+
+# Computing the base directory where the script it's at
+basedir: str = os.path.dirname(__file__)
+print("Current working directory:", os.getcwd())
+print("Paths are relative to:", basedir)
 
 
 class MainWindow(QMainWindow):
@@ -13,8 +19,13 @@ class MainWindow(QMainWindow):
 
         widget: QLabel = QLabel("Hello")
 
-        # using the SLOT method to set a pixmap for the referenced label
-        widget.setPixmap(QPixmap("otje.jpg"))
+        # Joins the based dir calculated safely, and then adding the path realtive to
+        # the computed path
+        widget.setPixmap(QPixmap(os.path.join(basedir, "otje.jpg")))
+
+        # Activate the scaling to ALWAYS fit the window size 
+        # (aspect ratio when enlarging not maintained)
+        widget.setScaledContents(True)
 
         self.setCentralWidget(widget)
 
