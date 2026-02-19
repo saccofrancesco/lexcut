@@ -13,21 +13,17 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        button: QPushButton = QPushButton("Press Me!")
+        self.button: QPushButton = QPushButton("Press Me!")
+        self.button.setCheckable(True)
+        self.button.released.connect(self.the_button_was_released)
+        self.button.setChecked(self.button_is_checked)
 
-        # Set the possibility for the button to be 'checked'
-        button.setCheckable(True)
-        button.clicked.connect(self.the_button_was_toggled)
-        button.setChecked(self.button_is_checked)
+        self.setCentralWidget(self.button)
 
-        # Set the button as the central widget
-        self.setCentralWidget(button)
-
-    def the_button_was_toggled(self, is_checked: bool) -> None:
-        
-        # Chancge the value of the STATE based on the data passed to the 
-        # SLOT by the button SIGNAL
-        self.button_is_checked = is_checked
+    # SLOT method to connect to with the RELEASED signal to then retrieve 
+    # manually the state
+    def the_button_was_released(self) -> None:
+        self.button_is_checked = self.button.isChecked()
 
         print(self.button_is_checked)
 
