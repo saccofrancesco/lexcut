@@ -6,17 +6,24 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QListWidget = QListWidget()
-        widget.addItems(["One", "Two", "Three"])
+        self.lwidget: QListWidget = QListWidget()
+        self.lwidget.addItems(["One", "Two", "Three"])
 
         # Using the widget custom SIGNALS
         # Trigger when the item in the list (<class 'QListWidgetItem'>)
-        widget.currentItemChanged.connect(self.item_changed)
+        self.lwidget.currentItemChanged.connect(self.item_changed)
+
+        # Configuring the selection mode by using various Qt Flags
+        self.lwidget.setSelectionMode(QListWidget.SelectionMode.MultiSelection)
 
         # Trigger when the text changed
-        widget.currentTextChanged.connect(self.text_changed)
+        self.lwidget.currentTextChanged.connect(self.text_changed)
 
-        self.setCentralWidget(widget)
+        # Based on the type of selection, we can connect a SIGNAL to trigger when the
+        # selection change (e. g. changing one item deselecting it it's a valid trigger)
+        self.lwidget.selectionModel().selectionChanged.connect(self.selection_changed)
+
+        self.setCentralWidget(self.lwidget)
 
     # SLOT method that reacts when an item changes and get access to 
     # the QListWidgetItem object
@@ -27,6 +34,12 @@ class MainWindow(QMainWindow):
     # the changes
     def text_changed(self, text: str) -> None:
         print(text)
+
+    # SLOT method to print the Items selected, when the number of item seleceted changes
+    def selection_changed(self) -> None:
+
+        # Gets the currently selected items via the widget class reference
+        print("Selected items:", self.lwidget.selectedItems())
 
 app: QApplication = QApplication([])
 
