@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QSpinBox
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -6,53 +6,40 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QLineEdit = QLineEdit()
+        widget: QSpinBox = QSpinBox()
+        # Or: widget: QDoubleSpinBox = QDoubleSpinBox()
 
-        # Customize the properties of the line editor
-        widget.setMaxLength(10) # 10 Characters
+        # Can individually set min and max
+        # widget.setMinimum(-10)
+        # widget.setMaximum(3)
 
-        # Text displayed bevore the user enters something
-        widget.setPlaceholderText("Enter your text")
+        # Use range for faster lower and upper bound settings
+        widget.setRange(-10, 3)
 
-        # It can also be setted not editable
-        # widget.setReadOnly(True)
+        # Can define prefix and suffix (thoes doesn't change between input 
+        # edits: they are fixed)
+        widget.setPrefix("$")
+        widget.setSuffix("c")
 
-        # It can be possible to sanitize the input using a mask
-        # widget.setMask("000.000.000.000;_") # Allow input of 3 digits separated by '.' (IP)
+        # You can vary the amout increased or decreased by the arrow customizing
+        # the step value
+        widget.setSingleStep(3) # Or e.g. 0.5 for <class 'QDoubleSpinBox'>
 
-        # Connect differente SIGNALS methods used by the QLineEdit widget 
-        # to notify some changes
-        widget.returnPressed.connect(self.return_pressed)
-        widget.selectionChanged.connect(self.selection_changed)
-        widget.textChanged.connect(self.text_changed)
-        widget.textEdited.connect(self.text_edited)
+        # Two SIGNAL method carrying with them the int version and the string version
+        # of the widget current content (value)
+        widget.valueChanged.connect(self.value_changed)
+        widget.textChanged.connect(self.value_changed_str)
 
         self.setCentralWidget(widget)
 
-    # SLOT method triggered when the widget is pressed
-    def return_pressed(self) -> None:
-        print("Return pressed!")
-
-        # Access the central widget setted in the constructor, using the reference 
-        # to the main window
-        self.centralWidget().setText("BOOM!")
+    # Both SLOTS methods reacts to changes SIGNAL; they differ by the chars included
+    # Includes only the value of the number / counter
+    def value_changed(self, value: int) -> None:
+        print(value)
     
-    # SLOT method triggered when a selection of text changes
-    def selection_changed(self) -> None:
-        print("Selection changed!")
-
-        # Access the selected text passed by the SIGNAL using the central widget
-        print(self.centralWidget().selectedText())
-
-    # SLOT method triggered by the changed of the text from -> to (only if 100% different)
-    def text_changed(self, text: str) -> None:
-        print("Text changed...")
-        print(text) # The full text now in the widget
-    
-    # SLOT method triggered by the EDITS of the text from -> to (even by a single letter)
-    def text_edited(self, edit: str) -> None:
-        print("Text edited...")
-        print(edit)
+    # Includes all the string, included the prefix and suffix (if setted)
+    def value_changed_str(self, value: str) -> None:
+        print(value)
 
 app: QApplication = QApplication([])
 
