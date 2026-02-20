@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidget, QListWidgetItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLineEdit
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -6,40 +6,53 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        self.lwidget: QListWidget = QListWidget()
-        self.lwidget.addItems(["One", "Two", "Three"])
+        widget: QLineEdit = QLineEdit()
 
-        # Using the widget custom SIGNALS
-        # Trigger when the item in the list (<class 'QListWidgetItem'>)
-        self.lwidget.currentItemChanged.connect(self.item_changed)
+        # Customize the properties of the line editor
+        widget.setMaxLength(10) # 10 Characters
 
-        # Configuring the selection mode by using various Qt Flags
-        self.lwidget.setSelectionMode(QListWidget.SelectionMode.MultiSelection)
+        # Text displayed bevore the user enters something
+        widget.setPlaceholderText("Enter your text")
 
-        # Trigger when the text changed
-        self.lwidget.currentTextChanged.connect(self.text_changed)
+        # It can also be setted not editable
+        # widget.setReadOnly(True)
 
-        # Based on the type of selection, we can connect a SIGNAL to trigger when the
-        # selection change (e. g. changing one item deselecting it it's a valid trigger)
-        self.lwidget.selectionModel().selectionChanged.connect(self.selection_changed)
+        # It can be possible to sanitize the input using a mask
+        # widget.setMask("000.000.000.000;_") # Allow input of 3 digits separated by '.' (IP)
 
-        self.setCentralWidget(self.lwidget)
+        # Connect differente SIGNALS methods used by the QLineEdit widget 
+        # to notify some changes
+        widget.returnPressed.connect(self.return_pressed)
+        widget.selectionChanged.connect(self.selection_changed)
+        widget.textChanged.connect(self.text_changed)
+        widget.textEdited.connect(self.text_edited)
 
-    # SLOT method that reacts when an item changes and get access to 
-    # the QListWidgetItem object
-    def item_changed(self, item: QListWidgetItem) -> None:
-        print(item.text())
+        self.setCentralWidget(widget)
 
-    # SLOT method that reacts when the text changes and get access to 
-    # the changes
-    def text_changed(self, text: str) -> None:
-        print(text)
+    # SLOT method triggered when the widget is pressed
+    def return_pressed(self) -> None:
+        print("Return pressed!")
 
-    # SLOT method to print the Items selected, when the number of item seleceted changes
+        # Access the central widget setted in the constructor, using the reference 
+        # to the main window
+        self.centralWidget().setText("BOOM!")
+    
+    # SLOT method triggered when a selection of text changes
     def selection_changed(self) -> None:
+        print("Selection changed!")
 
-        # Gets the currently selected items via the widget class reference
-        print("Selected items:", self.lwidget.selectedItems())
+        # Access the selected text passed by the SIGNAL using the central widget
+        print(self.centralWidget().selectedText())
+
+    # SLOT method triggered by the changed of the text from -> to (only if 100% different)
+    def text_changed(self, text: str) -> None:
+        print("Text changed...")
+        print(text) # The full text now in the widget
+    
+    # SLOT method triggered by the EDITS of the text from -> to (even by a single letter)
+    def text_edited(self, edit: str) -> None:
+        print("Text edited...")
+        print(edit)
 
 app: QApplication = QApplication([])
 
