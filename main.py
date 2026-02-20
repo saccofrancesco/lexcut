@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QComboBox
-
+from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidget, QListWidgetItem
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -7,31 +6,27 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QComboBox = QComboBox()
+        widget: QListWidget = QListWidget()
         widget.addItems(["One", "Two", "Three"])
 
-        # Changing what it's conceded in the widget
-        # Editable list
-        widget.setEditable(True)
+        # Using the widget custom SIGNALS
+        # Trigger when the item in the list (<class 'QListWidgetItem'>)
+        widget.currentItemChanged.connect(self.item_changed)
 
-        # Max number of option included the addition made by the edits
-        widget.setMaxCount(10)
-
-        # Choose and modify the way the elements are inserted in the widget's
-        # internal list
-        widget.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
-
-        widget.currentIndexChanged.connect(self.index_changed)
+        # Trigger when the text changed
         widget.currentTextChanged.connect(self.text_changed)
 
         self.setCentralWidget(widget)
 
-    def index_changed(self, index) -> None:
-        print(index)
+    # SLOT method that reacts when an item changes and get access to 
+    # the QListWidgetItem object
+    def item_changed(self, item: QListWidgetItem) -> None:
+        print(item.text())
 
+    # SLOT method that reacts when the text changes and get access to 
+    # the changes
     def text_changed(self, text: str) -> None:
         print(text)
-
 
 app: QApplication = QApplication([])
 
