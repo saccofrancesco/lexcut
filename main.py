@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QSpinBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QSlider
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -6,40 +6,34 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QSpinBox = QSpinBox()
-        # Or: widget: QDoubleSpinBox = QDoubleSpinBox()
+        widget: QSlider = QSlider()
 
-        # Can individually set min and max
-        # widget.setMinimum(-10)
-        # widget.setMaximum(3)
-
-        # Use range for faster lower and upper bound settings
+        # Same as QSpin
         widget.setRange(-10, 3)
+        widget.setSingleStep(3)
 
-        # Can define prefix and suffix (thoes doesn't change between input 
-        # edits: they are fixed)
-        widget.setPrefix("$")
-        widget.setSuffix("c")
-
-        # You can vary the amout increased or decreased by the arrow customizing
-        # the step value
-        widget.setSingleStep(3) # Or e.g. 0.5 for <class 'QDoubleSpinBox'>
-
-        # Two SIGNAL method carrying with them the int version and the string version
-        # of the widget current content (value)
+        # Some different SIGNALS from the QSpin or QDoubleSpin
         widget.valueChanged.connect(self.value_changed)
-        widget.textChanged.connect(self.value_changed_str)
+        widget.sliderMoved.connect(self.slider_position)
+        widget.sliderPressed.connect(self.slider_pressed)
+        widget.sliderReleased.connect(self.slider_released)
 
         self.setCentralWidget(widget)
 
-    # Both SLOTS methods reacts to changes SIGNAL; they differ by the chars included
-    # Includes only the value of the number / counter
+    # SLOT methods to access slider value and position in time
     def value_changed(self, value: int) -> None:
         print(value)
     
-    # Includes all the string, included the prefix and suffix (if setted)
-    def value_changed_str(self, value: str) -> None:
-        print(value)
+    def slider_position(self, position: int) -> None:
+        print("Position:", position)
+
+    # SLOT methods reacting and accessing if the slider is either
+    # pressed or released
+    def slider_pressed(self) -> None:
+        print("Pressed!")
+
+    def slider_released(self) -> None:
+        print("Released!")
 
 app: QApplication = QApplication([])
 
