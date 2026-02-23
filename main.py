@@ -1,4 +1,6 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QDial
+# Importing the custom widget from the file
+from layout_colorwidget import Color
+from PyQt6.QtWidgets import QApplication, QMainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -6,34 +8,10 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QDial = QDial()
-
-        # Same as QSpin
-        widget.setRange(-10, 3)
-        widget.setSingleStep(3)
-
-        # Some different SIGNALS from the QSpin or QDoubleSpin
-        widget.valueChanged.connect(self.value_changed)
-        widget.sliderMoved.connect(self.slider_position)
-        widget.sliderPressed.connect(self.slider_pressed)
-        widget.sliderReleased.connect(self.slider_released)
+        # create an instance of the custom widget and pass it a color
+        widget: Color = Color("red")
 
         self.setCentralWidget(widget)
-
-    # SLOT methods to access slider value and position in time
-    def value_changed(self, value: int) -> None:
-        print(value)
-    
-    def slider_position(self, position: int) -> None:
-        print("Position:", position)
-
-    # SLOT methods reacting and accessing if the slider is either
-    # pressed or released
-    def slider_pressed(self) -> None:
-        print("Pressed!")
-
-    def slider_released(self) -> None:
-        print("Released!")
 
 app: QApplication = QApplication([])
 
