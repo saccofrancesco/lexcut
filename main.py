@@ -1,5 +1,5 @@
 from layout_colorwidget import Color
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGridLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedLayout, QWidget
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -7,16 +7,20 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        # Instanciating a layout of grid type
-        layout: QGridLayout = QGridLayout()
+        # Instanciating a stack type layout
+        layout: QStackedLayout = QStackedLayout()
 
-        # Putting elements inside the grid layout,, suing row and columns indexes
-        layout.addWidget(Color("red"), 0, 0)
-        layout.addWidget(Color("green"), 1, 0)
-        layout.addWidget(Color("blue"), 1, 1)
-        layout.addWidget(Color("purple"), 2, 1)
+        # Adding several widget to the stack (one by one)
+        layout.addWidget(Color("red"))
+        layout.addWidget(Color("green"))
+        layout.addWidget(Color("blue"))
+        layout.addWidget(Color("yellow"))
 
-        # Creating the widget where to apply the layout
+        # Option to change the current index at which the stack displays a
+        # widget
+        layout.setCurrentIndex(3) # In this case: yellow, the last one added
+
+        # Creating the wrapper widget and applying the layout to it
         widget: QWidget = QWidget()
         widget.setLayout(layout)
 
