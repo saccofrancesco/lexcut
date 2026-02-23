@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(Color("red"), 0, 0)
         layout.addWidget(Color("green"), 1, 0)
         layout.addWidget(Color("blue"), 1, 1)
-        layout.addWidget(Color("red"), 2, 1)
+        layout.addWidget(Color("purple"), 2, 1)
 
         # Creating the widget where to apply the layout
         widget: QWidget = QWidget()
