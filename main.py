@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         layout1.setContentsMargins(0, 0, 0, 0)
         
         # Set the spacing between the elements inside the layout
-        layout2.setSpacing(20)
+        layout1.setSpacing(20)
 
         # Adding some placeholder widgets to the layout to see the final result
         layout2.addWidget(Color("red"))
