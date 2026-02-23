@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QSlider
 
 class MainWindow(QMainWindow):
@@ -6,7 +7,9 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget: QSlider = QSlider()
+        # Passing the orientation to the constructur overrides the
+        # default vertical orientation
+        widget: QSlider = QSlider(Qt.Orientation.Horizontal)
 
         # Same as QSpin
         widget.setRange(-10, 3)
