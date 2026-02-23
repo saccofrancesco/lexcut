@@ -1,6 +1,6 @@
 # Importing the custom widget from the file
 from layout_colorwidget import Color
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
 
         # Create a vertical layout where to put new widgets
-        layout: QVBoxLayout = QVBoxLayout()
+        layout: QHBoxLayout = QHBoxLayout()
 
         # Add widgets to visualize the layout structure
         layout.addWidget(Color("red"))
