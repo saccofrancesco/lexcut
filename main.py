@@ -11,8 +11,10 @@ class MainWindow(QMainWindow):
         # Create a vertical layout where to put new widgets
         layout: QVBoxLayout = QVBoxLayout()
 
-        # Add widget to the layout
+        # Add widgets to visualize the layout structure
         layout.addWidget(Color("red"))
+        layout.addWidget(Color("green"))
+        layout.addWidget(Color("blue"))
 
         # Creating a main widget where to apply the layout
         widget: QWidget = QWidget()
