@@ -1,5 +1,14 @@
 from layout_colorwidget import Color
-from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedLayout, QWidget
+from PyQt6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QVBoxLayout,
+    QHBoxLayout,
+    QStackedLayout,
+    QPushButton,
+    QWidget,
+)
+
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -7,24 +16,49 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        # Instanciating a stack type layout
-        layout: QStackedLayout = QStackedLayout()
+        # Defining the general layout structures of the page
+        page_layout: QVBoxLayout = QVBoxLayout()
+        button_layout: QHBoxLayout = QHBoxLayout()
+        self.stacked_layout: QStackedLayout = QStackedLayout()
 
-        # Adding several widget to the stack (one by one)
-        layout.addWidget(Color("red"))
-        layout.addWidget(Color("green"))
-        layout.addWidget(Color("blue"))
-        layout.addWidget(Color("yellow"))
+        # Adding the two pages' layouts part to the main page layout
+        page_layout.addLayout(button_layout)
+        page_layout.addLayout(self.stacked_layout)
 
-        # Option to change the current index at which the stack displays a
-        # widget
-        layout.setCurrentIndex(3) # In this case: yellow, the last one added
+        # Now creating the three buttons to control the stacked layout
+        # and the corresponding colored widget, in order
+        btn: QPushButton = QPushButton("red")
+        btn.pressed.connect(self.activate_tab_1)
+        button_layout.addWidget(btn)
+        self.stacked_layout.addWidget(Color("red"))
 
-        # Creating the wrapper widget and applying the layout to it
+        btn: QPushButton = QPushButton("green")
+        btn.pressed.connect(self.activate_tab_2)
+        button_layout.addWidget(btn)
+        self.stacked_layout.addWidget(Color("green"))
+
+        btn: QPushButton = QPushButton("yellow")
+        btn.pressed.connect(self.activate_tab_3)
+        button_layout.addWidget(btn)
+        self.stacked_layout.addWidget(Color("yellow"))
+
+        # Creating the widget where to apply the general page layout
         widget: QWidget = QWidget()
-        widget.setLayout(layout)
+        widget.setLayout(page_layout)
 
         self.setCentralWidget(widget)
+
+    # Creating the SLOT methods to trigger by the button pressing SIGNAL
+    # to then change the order in the stack, accordingly to the button label
+    def activate_tab_1(self) -> None:
+        self.stacked_layout.setCurrentIndex(0)
+
+    def activate_tab_2(self) -> None:
+        self.stacked_layout.setCurrentIndex(1)
+
+    def activate_tab_3(self) -> None:
+        self.stacked_layout.setCurrentIndex(2)
+
 
 app: QApplication = QApplication([])
 
