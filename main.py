@@ -16,6 +16,9 @@ class MainWindow(QMainWindow):
         tabs.setTabPosition(QTabWidget.TabPosition.North)
         tabs.setMovable(True)
 
+        # Change the tab mode adapting it to a tab document type insted of a bubble
+        # tabs.setDocumentMode(True)
+
         # Adding for each color in the list, the corresponding colored widget add
         # the desired tab
         for color in ["red", "green", "blue", "yellow"]:
