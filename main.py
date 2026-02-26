@@ -1,5 +1,12 @@
-from layout_colorwidget import Color
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTabWidget
+from PyQt6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QFormLayout,
+    QLineEdit,
+    QSpinBox,
+    QComboBox,
+    QWidget,
+)
 
 
 class MainWindow(QMainWindow):
@@ -8,23 +15,25 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        # Now implementing the tabwidget to reduce the code by 70% for managing tabs
-        # compared to using the stacked layout
-        tabs: QTabWidget = QTabWidget()
+        # Initializing a layout of type form
+        layout: QFormLayout = QFormLayout()
 
-        # Customize the position using the cardinal points and if it can be moved
-        tabs.setTabPosition(QTabWidget.TabPosition.North)
-        tabs.setMovable(True)
+        # Creating widgets to then display in the form
+        self.name: QLineEdit = QLineEdit()
+        self.age: QSpinBox = QSpinBox()
+        self.age.setRange(0, 200)
+        self.icecream: QComboBox = QComboBox()
+        self.icecream.addItems(["Vanilla", "Strawberry", "Chocolate"])
 
-        # Change the tab mode adapting it to a tab document type insted of a bubble
-        # tabs.setDocumentMode(True)
+        # Adding the created widget to the layout
+        layout.addRow("Name", self.name)  # or layout.addRow(QLabel("Name"), self.name)
+        layout.addRow("Age", self.age)
+        layout.addRow("Favourite Ice cream", self.icecream)
 
-        # Adding for each color in the list, the corresponding colored widget add
-        # the desired tab
-        for color in ["red", "green", "blue", "yellow"]:
-            tabs.addTab(Color(color), color.capitalize())
-
-        self.setCentralWidget(tabs)
+        # Creating and placing the widget where the layout's applied
+        widget: QWidget = QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
 
 
 app: QApplication = QApplication([])
