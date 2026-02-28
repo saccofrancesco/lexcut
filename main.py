@@ -18,6 +18,9 @@ class MainWindow(QMainWindow):
         # Initializing a layout of type form
         layout: QFormLayout = QFormLayout()
 
+        # Creating a dictionary where to store the widgets' data
+        self.data: dict[str, str | int] = dict()
+
         # Creating widgets to then display in the form
         self.name: QLineEdit = QLineEdit()
         self.age: QSpinBox = QSpinBox()
@@ -34,6 +37,20 @@ class MainWindow(QMainWindow):
         widget: QWidget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
+
+    # SLOT methods for handling the changes in the widgets and update the
+    # values in th data component variable
+    def handle_name_changed(self, name: str) -> None:
+        self.data["name"] = name
+        print(self.data)
+
+    def handle_age_changed(self, age: int) -> None:
+        self.data["age"] = age
+        print(self.data)
+
+    def handle_icecream_changed(self, icecream: str) -> None:
+        self.data["favourite_icecream"] = icecream
+        print(self.data)
 
 
 app: QApplication = QApplication([])
