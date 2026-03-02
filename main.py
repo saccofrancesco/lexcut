@@ -22,18 +22,21 @@ class MainWindow(QMainWindow):
         # Creating a dictionary where to store the widgets' data, with default
         # data
         self.data: dict[str, str | int] = {
-            "name": "",
-            "age": 0,
-            "favourite_icecream": "",
+            "name": "Johnina Smith",
+            "age": 10,
+            "favourite_icecream": "Vanilla",
         }
 
         # Creating widgets to then display in the form
         self.name: QLineEdit = QLineEdit()
+        self.name.setText(self.data["name"])
         self.name.textChanged.connect(self.handle_name_changed)
         self.age: QSpinBox = QSpinBox()
+        self.age.setValue(self.data["age"])
         self.age.valueChanged.connect(self.handle_age_changed)
         self.age.setRange(0, 200)
         self.icecream: QComboBox = QComboBox()
+        self.icecream.setCurrentText(self.data["favourite_icecream"])
         self.icecream.addItems(["Vanilla", "Strawberry", "Chocolate"])
         self.icecream.currentTextChanged.connect(self.handle_icecream_changed)
 
