@@ -23,10 +23,13 @@ class MainWindow(QMainWindow):
 
         # Creating widgets to then display in the form
         self.name: QLineEdit = QLineEdit()
+        self.name.textChanged.connect(self.handle_name_changed)
         self.age: QSpinBox = QSpinBox()
+        self.age.valueChanged.connect(self.handle_age_changed)
         self.age.setRange(0, 200)
         self.icecream: QComboBox = QComboBox()
         self.icecream.addItems(["Vanilla", "Strawberry", "Chocolate"])
+        self.icecream.currentTextChanged.connect(self.handle_icecream_changed)
 
         # Adding the created widget to the layout
         layout.addRow("Name", self.name)  # or layout.addRow(QLabel("Name"), self.name)
