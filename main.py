@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QSpinBox,
     QComboBox,
+    QLabel,
     QWidget,
 )
 
@@ -18,8 +19,13 @@ class MainWindow(QMainWindow):
         # Initializing a layout of type form
         layout: QFormLayout = QFormLayout()
 
-        # Creating a dictionary where to store the widgets' data
-        self.data: dict[str, str | int] = dict()
+        # Creating a dictionary where to store the widgets' data, with default
+        # data
+        self.data: dict[str, str | int] = {
+            "name": "",
+            "age": 0,
+            "favourite_icecream": "",
+        }
 
         # Creating widgets to then display in the form
         self.name: QLineEdit = QLineEdit()
@@ -31,29 +37,46 @@ class MainWindow(QMainWindow):
         self.icecream.addItems(["Vanilla", "Strawberry", "Chocolate"])
         self.icecream.currentTextChanged.connect(self.handle_icecream_changed)
 
+        # Creating an empty label for showing the validation results
+        self.error: QLabel = QLabel()
+
         # Adding the created widget to the layout
         layout.addRow("Name", self.name)  # or layout.addRow(QLabel("Name"), self.name)
         layout.addRow("Age", self.age)
         layout.addRow("Favourite Ice cream", self.icecream)
+        layout.addRow(self.error)
 
         # Creating and placing the widget where the layout's applied
         widget: QWidget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
 
+    # Method to process all the data in the widgets and validate it (deciding if it'good
+    # and if not, what widgets are wrong)
+    def validate(self) -> None:
+        if self.data["age"] > 10 and self.data["favourite_icecream"] == "Chocolate":
+            self.error.setText("People over 10 aren't allowed chocolate ice cream")
+            return  # Used to return only one message at a time (even if more than one error)
+        if self.data["age"] > 100:
+            self.error.setText("Did you send a telegram?")
+            return
+
+        # In case nothing is triggered, set the text always to be blank
+        self.error.setText("")
+
     # SLOT methods for handling the changes in the widgets and update the
     # values in th data component variable
     def handle_name_changed(self, name: str) -> None:
         self.data["name"] = name
-        print(self.data)
+        self.validate()
 
     def handle_age_changed(self, age: int) -> None:
         self.data["age"] = age
-        print(self.data)
+        self.validate()
 
     def handle_icecream_changed(self, icecream: str) -> None:
         self.data["favourite_icecream"] = icecream
-        print(self.data)
+        self.validate()
 
 
 app: QApplication = QApplication([])
